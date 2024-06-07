@@ -5,6 +5,7 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import Axios from "axios";
 // import Breadcrumb from "../../../component/Breadcrumb";
 import { UserContext } from "../../../context/UserContext";
+import { Link } from "react-router-dom";
 function Header() {
   const { logout, user } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -71,12 +72,12 @@ function Header() {
             <div className="space-y-6 px-4 pt-10 pb-6">
               <div className="grid grid-cols-1 items-start gap-y-6 gap-x-6">
                 <div className="flow-root">
-                  <a
-                    href="/"
+                  <Link
+                    to="/"
                     className="-m-2 block p-2 font-medium text-slate-900 hover:bg-slate-100 rounded-md"
                   >
                     Trang chủ
-                  </a>
+                  </Link>
                 </div>
                 <div>
                   <button
@@ -93,52 +94,52 @@ function Header() {
                     >
                       {categories.map((category, index) => (
                         <li key={index}>
-                          <a
-                            href={category.id}
+                          <Link
+                            to={category.id}
                             className="block p-3 hover:bg-slate-100 rounded-md"
                           >
                             {category.tenDanhMuc}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
                   )}
                 </div>
                 <div className="flow-root">
-                  <a
-                    href="/tac-gia"
+                  <Link
+                    to="/tac-gia"
                     className="-m-2 block p-2 font-medium text-slate-900 hover:bg-slate-100 rounded-md"
                   >
                     Tác giả
-                  </a>
+                  </Link>
                 </div>
                 <div className="flow-root">
-                  <a
-                    href="/lien-he"
+                  <Link
+                    to="/lien-he"
                     className="-m-2 block p-2 font-medium text-slate-900 hover:bg-slate-100 rounded-md"
                   >
                     Liên hệ
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
 
             <div className="space-y-6 border-t border-slate-200 py-6 px-4">
               <div className="flow-root">
-                <a
-                  href="/login"
+                <Link
+                  to="/login"
                   className="-m-2 block p-2 font-medium text-slate-900 hover:bg-slate-100 rounded-md"
                 >
                   Đăng nhập
-                </a>
+                </Link>
               </div>
               <div className="flow-root">
-                <a
-                  href="/register"
+                <Link
+                  to="/register"
                   className="-m-2 block p-2 font-medium text-slate-900 hover:bg-slate-100 rounded-md"
                 >
                   Tạo tài khoản
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -172,7 +173,7 @@ function Header() {
                   </svg>
                 </button>
               </div>
-              <a href="/">
+              <Link to="/">
                 <img
                   src="/book-store1.png"
                   alt="Sách mới"
@@ -180,25 +181,25 @@ function Header() {
                   height="32"
                   width="32"
                 />
-              </a>
+              </Link>
               <div className="hidden lg:ml-8 lg:block lg:self-stretch">
                 {/* <div> */}
                 <div>{/* Dropdown menu component */}</div>
                 <ul className="flex h-full justify-center space-x-8">
                   <li className="flex items-center">
-                    <a
-                      href="/"
+                    <Link
+                      to="/"
                       className="flex items-center text-sm font-medium text-slate-700 hover:text-slate-800"
                     >
                       Trang chủ
-                    </a>
+                    </Link>
                   </li>
                   <li
                     className="flex items-center"
                     onMouseLeave={() => setShowBookCategory(false)} // Handle mouse leaving to hide the category
                   >
-                    <a
-                      // href="/"
+                    <Link
+                      // to="/"
                       onClick={() => { }}
                       className="flex items-center text-sm font-medium text-slate-700 hover:text-slate-800"
                       onMouseEnter={() => setShowBookCategory(true)} // Use a function to set the state
@@ -215,32 +216,32 @@ function Header() {
                           className="h-3 w-3 ml-1"
                         />
                       )}
-                    </a>
+                    </Link>
                     {showBookCategory && <BookCategory />}
                   </li>
                   <li className="flex items-center">
-                    <a
-                      href="/tat-ca-sach"
+                    <Link
+                      to="/tat-ca-sach"
                       className="flex items-center text-sm font-medium text-slate-700 hover:text-slate-800"
                     >
                       Tất cả sách
-                    </a>
+                    </Link>
                   </li>
                   <li className="flex items-center">
-                    <a
-                      href="/tac-gia"
+                    <Link
+                      to="/tac-gia"
                       className="flex items-center text-sm font-medium text-slate-700 hover:text-slate-800"
                     >
                       Tác giả
-                    </a>
+                    </Link>
                   </li>
                   <li className="flex items-center">
-                    <a
-                      href="/lien-he"
+                    <Link
+                      to="/lien-he"
                       className="flex items-center text-sm font-medium text-slate-700 hover:text-slate-800"
                     >
                       Liên hệ
-                    </a>
+                    </Link>
                   </li>
                 </ul>
                 {/* </div> */}
@@ -249,22 +250,22 @@ function Header() {
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {!user.auth ? (
                     <>
-                      <a
-                        href="/login"
+                      <Link
+                        to="/login"
                         className="text-sm font-medium text-slate-700 hover:text-slate-800"
                       >
                         Đăng nhập
-                      </a>
+                      </Link>
                       <span
                         className="h-6 w-px bg-slate-200"
                         aria-hidden="true"
                       ></span>
-                      <a
-                        href="/register"
+                      <Link
+                        to="/register"
                         className="text-sm font-medium text-slate-700 hover:text-slate-800"
                       >
                         Tạo tài khoản
-                      </a>
+                      </Link>
                     </>
                   ) : (
                     <>
@@ -296,12 +297,12 @@ function Header() {
                           className={`absolute right-0 mt-2 w-36 flex flex-col rounded-sm border border-stroke bg-white shadow-sm ${dropdownOpen ? "block" : "hidden"
                             }`}
                         >
-                          <a
-                            href="/don-hang"
+                          <Link
+                            to="/don-hang"
                             className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-blue-600"
                           >
                             Xem đơn hàng
-                          </a>
+                          </Link>
                           <button
                             className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-blue-600"
                             onClick={logout}
@@ -339,8 +340,8 @@ function Header() {
                   </button>
                 </div>
                 <div className="ml-4 flow-root lg:ml-6">
-                  <a
-                    href="/gio-hang"
+                  <Link
+                    to="/gio-hang"
                     className="group -m-2 flex items-center p-2"
                   >
                     <svg
@@ -361,7 +362,7 @@ function Header() {
                     {/* <span className="ml-2 text-sm font-medium text-slate-700 group-hover:text-slate-800">
                       0
                     </span> */}
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

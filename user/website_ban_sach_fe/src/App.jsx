@@ -25,7 +25,9 @@ function App() {
                       <Page />
                     </Layout>
                   }
-                />
+                >
+                  <Route index element={<Page />} />
+                </Route>
               );
             })}
           </Routes>

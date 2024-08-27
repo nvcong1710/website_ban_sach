@@ -1,10 +1,17 @@
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../../../src/context/UserContext";
 
 function BookCategory() {
   const [categories, setCategories] = useState([]);
+  const user = useContext(UserContext);
   useEffect(() => {
-    Axios.get("http://localhost:8080/api/danhmuc/getalldanhmuc")
+    Axios.get("http://localhost:8080/api/danhmuc/getalldanhmuc", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    })
       .then((res) => {
         setCategories(res.data);
       })

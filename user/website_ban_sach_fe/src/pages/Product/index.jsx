@@ -29,7 +29,12 @@ const ProductPage = () => {
     const res = await axios.post("http://localhost:8080/api/cart/addtocart", {
       taiKhoanId: user.id,
       sachId: productId,
-      soLuong: quantity,
+      soLuong: quantity
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
     });
     if (res.status == 200) {
       alert("Thêm thành công sản phẩm vào giỏ hàng");
@@ -42,7 +47,12 @@ const ProductPage = () => {
     const fetchProduct = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/sach/getsachbyid/${productId}`
+          `http://localhost:8080/api/sach/getsachbyid/${productId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          }
+        }
         );
         if (response.ok) {
           const data = await response.json();
@@ -65,7 +75,12 @@ const ProductPage = () => {
     }
   }, [product]);
   useEffect(() => {
-    axios.get("http://localhost:8080/api/sach/getallsach")
+    axios.get(`http://localhost:8080/api/sach/getallsach`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    })
       .then((response) => {
         setRandomBooks(response.data);
       })
@@ -142,21 +157,19 @@ const ProductPage = () => {
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex space-x-6">
               <button
-                className={`${
-                  activeTab === "description"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                className={`${activeTab === "description"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
                 onClick={() => handleTabClick("description")}
               >
                 Mô tả sản phẩm
               </button>
               <button
-                className={`${
-                  activeTab === "reviews"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                className={`${activeTab === "reviews"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
                 onClick={() => handleTabClick("reviews")}
               >
                 Đánh giá khách hàng

@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../../../website_ban_sach_fe/src/context/UserContext";
+
 import Axios from 'axios';
 
 const FeedbackList = ({ bookId }) => {
@@ -7,7 +9,12 @@ const FeedbackList = ({ bookId }) => {
     useEffect(() => {
         const fetchFeedbacks = async () => {
             try {
-                const res = await Axios.get(`http://localhost:8080/api/feedback/layfeedbacktheosach/${bookId}`);
+                const res = await Axios.get(`http://localhost:8080/api/feedback/layfeedbacktheosach/${bookId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token}`
+                    }
+                });
                 setFeedbacks(res.data);
             } catch (error) {
                 console.error('Error fetching feedbacks:', error);

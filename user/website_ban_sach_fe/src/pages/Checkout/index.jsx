@@ -16,7 +16,7 @@ const Checkout = () => {
   const [web3, setWeb3] = useState(null);
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const destinationAccount = "0x3B7Dec9E79cdD568a60972EE615f92e0F2BBc4d0";
+  const destinationAccount = "0xf5533a8679F4bd96C9480F3F4AAb3F2c9B0d7aA5";
 
   const connectGanache = async () => {
     const ganacheUrl = "http://localhost:7545";
@@ -115,7 +115,12 @@ const Checkout = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/cart/getgiohang/${user.id}`)
+      .get(`http://localhost:8080/api/cart/getgiohang/${user.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      })
       .then((res) => {
         console.log(res.data);
         if (res.data.length === 0) {
@@ -227,7 +232,12 @@ const Checkout = () => {
         console.log(result);
         try {
           axios
-            .post("http://localhost:8080/api/donhang/createdonhang", orderData)
+            .post("http://localhost:8080/api/donhang/createdonhang", orderData, {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+              }
+            })
             .then((response) => {
               console.log("Đặt hàng thành công:", response.data);
               alert("Đặt hàng thành công");

@@ -9,7 +9,12 @@ function Cart() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/cart/getgiohang/${user.id}`)
+      .get(`http://localhost:8080/api/cart/getgiohang/${user.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      })
       .then((res) => {
         setCartItems(res.data);
       })
@@ -35,6 +40,11 @@ function Cart() {
         taiKhoanId: updatedCartItems[index].taiKhoanId,
         sachId: updatedCartItems[index].sach.id,
         soLuong: newQuantity,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
       })
       .then((res) => {
         console.log("Quantity updated successfully");
@@ -48,10 +58,20 @@ function Cart() {
   const handleDelete = (id) => {
     console.log(id);
     axios
-      .post(`http://localhost:8080/api/cart/delete/${id}`)
+      .post(`http://localhost:8080/api/cart/delete/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      })
       .then((res) => {
         axios
-          .get(`http://localhost:8080/api/cart/getgiohang/${user.id}`)
+          .get(`http://localhost:8080/api/cart/getgiohang/${user.id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.token}`
+            }
+          })
           .then((res) => {
             setCartItems(res.data);
           });

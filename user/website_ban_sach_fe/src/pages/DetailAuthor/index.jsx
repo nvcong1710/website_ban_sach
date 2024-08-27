@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../../../website_ban_sach_fe/src/context/UserContext";
+
 import { useParams } from "react-router-dom";
 import { BookSlider } from "../../component/Slider";
 import axios from "axios";
@@ -8,12 +10,17 @@ const DetailAuthorPage = () => {
   const [author, setAuthor] = useState();
   const [loading, setLoading] = useState(true);
   const [books, setBooks] = useState();
-
+  const { user } = useContext(UserContext);
   useEffect(() => {
     const fetchAuthors = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/tacgia/getTacGia/${authorId}`
+          `http://localhost:8080/api/tacgia/getTacGia/${authorId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          }
+        }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch authors");
@@ -31,7 +38,12 @@ const DetailAuthorPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/sach/getsachbytacgia/${authorId}`)
+      .get(`http://localhost:8080/api/sach/getsachbytacgia/${authorId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      })
       .then((response) => {
         setBooks(response.data);
       })

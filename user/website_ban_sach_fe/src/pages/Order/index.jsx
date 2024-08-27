@@ -8,7 +8,13 @@ function Order() {
 
   useEffect(() => {
     async function fetchOrders() {
-      fetch(`http://localhost:8080/api/donhang/getalldonhang/${user.id}`)
+      fetch(`http://localhost:8080/api/donhang/getalldonhang/${user.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      }
+      )
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
@@ -46,10 +52,10 @@ function Order() {
                 <div>
                   <dt className="font-medium text-slate-900">Tổng tiền</dt>
                   <dd className="mt-1 font-medium text-slate-900">
-                {new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(order.tongTien)}</dd>
+                    {new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(order.tongTien)}</dd>
                 </div>
               </dl>
 

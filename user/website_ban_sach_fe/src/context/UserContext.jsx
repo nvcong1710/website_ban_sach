@@ -1,5 +1,5 @@
 import React from "react";
-const UserContext = React.createContext({ id:"", userName: "", auth: false });
+const UserContext = React.createContext({ id: "", userName: "", auth: false, token: "", type: "" });
 
 // @function  UserProvider
 // Create function to provide UserContext
@@ -7,17 +7,26 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = React.useState(
     sessionStorage.getItem("user")
       ? JSON.parse(sessionStorage.getItem("user"))
-      : { id:"", userName: "", email: "", auth: false }
+      : { id: "", userName: "", email: "", auth: false, token: "", type: "" }
   );
 
   const login = (user) => {
     setUser({
-      id:user.id,
+      id: user.id,
       userName: user.username,
       email: user.email,
+      token: user.token,
+      type: user.type,
       auth: true,
     });
-    sessionStorage.setItem("user", JSON.stringify({ id:user.id, userName: user.username, email: user.email, auth: true }));
+    sessionStorage.setItem("user", JSON.stringify({
+      id: user.id,
+      userName: user.username,
+      email: user.email,
+      token: user.token,
+      type: user.type,
+      auth: true
+    }));
   };
 
   const logout = () => {
@@ -26,6 +35,8 @@ const UserProvider = ({ children }) => {
       id: "",
       userName: "",
       email: "",
+      token: "",
+      type: "",
       auth: false,
     }));
   };

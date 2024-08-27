@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../../../website_ban_sach_fe/src/context/UserContext";
+
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
@@ -6,16 +8,26 @@ const DetailOrder = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState({});
   const [orderItems, setOrderItems] = useState([]);
-
+  const user = useContext(UserContext);
   useEffect(() => {
     const fetchOrderData = async () => {
       try {
         const [orderItemsResponse, orderResponse] = await Promise.all([
           axios.get(
-            `http://localhost:8080/api/chitietdonhang/getall/${orderId}`
+            `http://localhost:8080/api/chitietdonhang/getall/${orderId}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.token}`
+            }
+          }
           ),
           axios.get(
-            `http://localhost:8080/api/donhang/getthongtindonhang/${orderId}`
+            `http://localhost:8080/api/donhang/getthongtindonhang/${orderId}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.token}`
+            }
+          }
           ),
         ]);
 
@@ -83,12 +95,12 @@ const DetailOrder = () => {
                     alt={item.sach.tieuDe}
                     className="h-full w-full object-cover object-center"
                     src={
-                              item.sach.photoURL
-                                ? item.sach.photoURL.includes("/")
-                                  ? item.sach.photoURL
-                                  : `http://localhost:8080/sach_image/${item.sach.photoURL}`
-                                : "https://bookstoreromanceday.org/wp-content/uploads/2020/08/book-cover-placeholder.png"
-                            }
+                      item.sach.photoURL
+                        ? item.sach.photoURL.includes("/")
+                          ? item.sach.photoURL
+                          : `http://localhost:8080/sach_image/${item.sach.photoURL}`
+                        : "https://bookstoreromanceday.org/wp-content/uploads/2020/08/book-cover-placeholder.png"
+                    }
                   />
                 </div>
                 <div className="ml-6 flex flex-col flex-1 justify-between text-sm">
@@ -153,9 +165,9 @@ const DetailOrder = () => {
               </dt>
               <dd className="text-slate-700/80">
                 {new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(order.tongTien)}
+                  style: "currency",
+                  currency: "VND",
+                }).format(order.tongTien)}
               </dd>
             </div>
             <div className="flex justify-between">
@@ -176,9 +188,9 @@ const DetailOrder = () => {
               </dt>
               <dd className="text-slate-900">
                 {new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(order.tongTien)}
+                  style: "currency",
+                  currency: "VND",
+                }).format(order.tongTien)}
               </dd>
             </div>
           </dl>

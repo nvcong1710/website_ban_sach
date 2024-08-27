@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../../../website_ban_sach_fe/src/context/UserContext";
+
 import { useParams } from "react-router-dom";
 // import { getBooksByCategory } from './api';
 import ProductPrice from "../../component/ProductPrice";
@@ -19,16 +21,22 @@ const BooksByCategoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalpage, setTotalpage] = useState(1);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchBooks = () => {
       const apiUrl =
-        "http://localhost:8080/api/sach/getbydanhmucphantrang/" +
+        `http://localhost:8080/api/sach/getbydanhmucphantrang/` +
         category +
         "/" +
         page;
 
-      Axios.get(apiUrl).then((response) => {
+      Axios.get(apiUrl, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      }).then((response) => {
         setBooks(response.data.listSach);
         setLoading(false);
         setTotalpage(response.data.tongSoTrang);
@@ -40,12 +48,17 @@ const BooksByCategoryPage = () => {
   const handlePageClick = (event) => {
     setPage(+event.selected + 1);
     const apiUrl =
-      "http://localhost:8080/api/sach/getbydanhmucphantrang/" +
+      `http://localhost:8080/api/sach/getbydanhmucphantrang/` +
       category +
       "/" +
       (+event.selected + 1);
 
-    Axios.get(apiUrl).then((response) => {
+    Axios.get(apiUrl, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    }).then((response) => {
       setBooks(response.data.listSach);
       setLoading(false);
       setTotalpage(response.data.tongSoTrang);
@@ -56,7 +69,12 @@ const BooksByCategoryPage = () => {
     const res = Axios.get(
       `http://localhost:8080/api/sach/loctheogia/${price.at(0)}-${price.at(
         1
-      )}/${category}`
+      )}/${category}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    }
     )
       .then((res) => {
         setBooks(res.data);

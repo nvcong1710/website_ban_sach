@@ -1,13 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../../../website_ban_sach_fe/src/context/UserContext";
+
+
+
 const AuthorsPage = () => {
   const [authors, setAuthors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchAuthors = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/tacgia/getalltacgia"
+          "http://localhost:8080/api/tacgia/getalltacgia", {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          }
+        }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch authors");

@@ -1,21 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import ProductPrice from "../../component/ProductPrice";
 import "rc-slider/assets/index.css";
 import Axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { UserContext } from "../../../../website_ban_sach_fe/src/context/UserContext";
 
 const AllBooks = () => {
   const [books, setBooks] = useState([]);
   const [tooltipText, setTooltipText] = useState("");
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchBooks = async () => {
       const apiUrl = "http://localhost:8080/api/sach/getallsach";
       try {
-        const response = await Axios.get(apiUrl);
+        const response = await Axios.get(apiUrl, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
         setBooks(response.data || []);
       } catch (error) {
         console.error("Error fetching books:", error);
@@ -33,7 +40,12 @@ const AllBooks = () => {
       const searchUrl = `http://localhost:8080/api/sach/timsachtheotieude/${searchQuery}`;
       setLoading(true);
       try {
-        const response = await Axios.get(searchUrl);
+        const response = await Axios.get(searchUrl, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
         setBooks(response.data || []);
       } catch (error) {
         console.error("Error searching books:", error);

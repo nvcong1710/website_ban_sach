@@ -1,14 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
 import Axios from "axios";
-// import { UserContext } from "../../context/UserContext";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const FeedbackForm = ({ user }) => {
     const [feedback, setFeedback] = useState('');
     const [rating, setRating] = useState(0);
     const { productId } = useParams();
-    // const { user } = useContext(UserContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +15,11 @@ const FeedbackForm = ({ user }) => {
         const res = await Axios.post(apiurl,
             {
                 noiDung: feedback,
-                soSao: rating
+                soSao: rating,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                }
             }
         );
         if (res.status == 200) {

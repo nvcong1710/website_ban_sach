@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from "react";
 import { BookSlider, AuthorSlider } from "../../component/Slider";
 import axios from "axios";
+import React, { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../../../website_ban_sach_fe/src/context/UserContext";
 function HomePage() {
   const [authors, setAuthors] = useState();
   const [books, setBooks] = useState();
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const authorsResponse = await fetch(
-          "http://localhost:8080/api/tacgia/get10tacgia"
+          `http://localhost:8080/api/tacgia/get10tacgia`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          }
+        }
         );
         if (!authorsResponse.ok) {
           throw new Error("Failed to fetch authors");
@@ -22,7 +29,12 @@ function HomePage() {
 
       try {
         const booksResponse = await axios.get(
-          "http://localhost:8080/api/sach/getallsach"
+          `http://localhost:8080/api/sach/getallsach`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          }
+        }
         );
         setBooks(booksResponse.data);
       } catch (error) {

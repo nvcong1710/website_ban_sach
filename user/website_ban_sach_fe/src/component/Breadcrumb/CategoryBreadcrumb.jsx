@@ -1,30 +1,19 @@
 import Axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useLocation, Link, useParams } from "react-router-dom";
+import { UserContext } from "../../../../website_ban_sach_fe/src/context/UserContext";
 
 const CategoryBreadcrumb = () => {
   const categoryId = useParams();
-  // const location = useLocation();
-  // const pathname = location.pathname;
-
-  // const findCategory = (pathname, categories) => {
-  //   const pathSegments = pathname
-  //     .split("/")
-  //     .filter((segment) => segment !== "");
-  //   let category = null;
-  //   category = categories.find(
-  //     (cat) => cat.link === `/${pathSegments[0]}`
-  //   );
-  //   return category;
-  // };
-
-  // const category = findCategory(pathname, categories);
-
-
-  // const breadcrumbs = [category];
+  const { user } = useContext(UserContext);
   const [breadcrumbs, setBreadCrumbs] = useState([]);
   useEffect(() => {
-    Axios.get("http://localhost:8080/api/danhmuc/getalldanhmuc")
+    Axios.get("http://localhost:8080/api/danhmuc/getalldanhmuc", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    })
       .then((res) => {
         setBreadCrumbs(res.data);
       })

@@ -7,7 +7,7 @@ import Axios from "axios";
 import { UserContext } from "../../../context/UserContext";
 import { Link } from "react-router-dom";
 function Header() {
-  const { logout, user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showBookCategory, setShowBookCategory] = useState(false);
@@ -15,7 +15,12 @@ function Header() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:8080/api/danhmuc/getalldanhmuc")
+    Axios.get("http://localhost:8080/api/danhmuc/getalldanhmuc", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    })
       .then((res) => {
         setCategories(res.data);
       })

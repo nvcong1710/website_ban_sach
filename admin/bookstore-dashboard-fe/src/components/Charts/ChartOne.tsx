@@ -1,5 +1,6 @@
 import { ApexOptions } from "apexcharts";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 import ReactApexChart from "react-apexcharts";
 
 const options: ApexOptions = {
@@ -117,9 +118,14 @@ const options: ApexOptions = {
 
 const ChartOne = () => {
   const [state, setState] = useState({ series: [] });
-
-  useEffect(() => {
-    fetch("http://localhost:8080/api/dashboard/doanh_thu_theo_thang")
+  const user = useContext(UserContext);
+  useEffect(() => { 
+    fetch("http://localhost:8080/api/dashboard/doanh_thu_theo_thang", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

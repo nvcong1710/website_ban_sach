@@ -1,12 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import DataTable from "../../components/DataTable";
+import { UserContext } from "../../context/UserContext";
 function Author() {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     async function fetchTacGia() {
-      fetch("http://localhost:8080/api/tacgia/getalltacgia")
+      fetch("http://localhost:8080/api/tacgia/getalltacgia", {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      })
         .then((response) => {
           return response.json();
         })

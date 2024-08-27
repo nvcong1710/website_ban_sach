@@ -1,21 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import DataTable from "../../components/DataTable";
+import Axios from "axios";
+import { UserContext } from "../../context/UserContext";
 function Product() {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
-    async function fetchProducts() {
-      fetch("http://localhost:8080/api/sach/getallsach")
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-          setProducts(data);
+    const fetchBooks = async () => {
+      console.log(user)
+      const apiUrl = "http://localhost:8080/api/sach/getallsach";
+      try {
+        const response = await Axios.get(apiUrl, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          }
         });
-    }
-    fetchProducts();
+        setProducts(response.data || []);
+      } catch (error) {
+        console.error("Error fetching books:", error);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
   }, []);
 
   const handleSearchChange = (e) => {

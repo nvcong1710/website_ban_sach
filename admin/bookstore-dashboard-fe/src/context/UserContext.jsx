@@ -1,25 +1,26 @@
 import React from "react";
-const UserContext = React.createContext({ id:"", userName: "", auth: false });
+const UserContext = React.createContext({ id: "", userName: "", token: "", auth: false });
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = React.useState(
     sessionStorage.getItem("user")
       ? JSON.parse(sessionStorage.getItem("user"))
-      : { id:"", userName: "", auth: false }
+      : { id: "", userName: "", token: "", auth: false }
   );
   React.useEffect(() => {
     if (!user.auth) {
       if (window.location.pathname !== "/login")
-      window.location.href = "/login";
+        window.location.href = "/login";
     }
-  },[user.auth]);
+  }, [user.auth]);
   const login = (user) => {
     setUser({
-      id:user.id,
+      id: user.id,
       userName: user.username,
+      token: user.token,
       auth: true,
     });
-    sessionStorage.setItem("user", JSON.stringify({ id:user.id, userName: user.username, auth: true }));
+    sessionStorage.setItem("user", JSON.stringify({ id: user.id, userName: user.username, token: user.token, auth: true }));
   };
 
   const logout = () => {
@@ -27,6 +28,7 @@ const UserProvider = ({ children }) => {
     setUser(() => ({
       id: "",
       userName: "",
+      token: "",
       auth: false,
     }));
   };

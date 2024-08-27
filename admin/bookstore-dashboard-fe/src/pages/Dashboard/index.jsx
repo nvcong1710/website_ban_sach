@@ -1,27 +1,49 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import CardDataStats from "../../components/CardDataStats";
 import ChartOne from "../../components/Charts/ChartOne";
 import ChartTwo from "../../components/Charts/ChartTwo";
+import { UserContext } from "../../context/UserContext";
 function Dashboard() {
   const [totalSach, setTotalSach] = useState(0);
   const [totalDonHang, setTotalDonHang] = useState(0);
   const [totalTongTien, setTotalTongTien] = useState(0);
   const [totalTaiKhoan, setTotalTaiKhoan] = useState(0);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/thongke/gettotalsach")
+    fetch("http://localhost:8080/api/thongke/gettotalsach", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => setTotalSach(data));
 
-    fetch("http://localhost:8080/api/thongke/gettotaltongtien")
+    fetch("http://localhost:8080/api/thongke/gettotaltongtien", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => setTotalTongTien(data));
 
-    fetch("http://localhost:8080/api/thongke/gettotaldonhang")
+    fetch("http://localhost:8080/api/thongke/gettotaldonhang", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => setTotalDonHang(data));
 
-    fetch("http://localhost:8080/api/thongke/gettotaltaikhoan")
+    fetch("http://localhost:8080/api/thongke/gettotaltaikhoan", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => setTotalTaiKhoan(data));
   }, []);

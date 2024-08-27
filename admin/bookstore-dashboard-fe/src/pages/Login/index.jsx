@@ -21,7 +21,7 @@ function LoginPage() {
     if (username && password) {
       console.log("Login with: ", username, password);
       try {
-        let response = await fetch("http://localhost:8080/api/auth/login", {
+        let response = await fetch("http://localhost:8080/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -30,11 +30,11 @@ function LoginPage() {
         })//.then((res) => res.json());
 
         console.log(response);
-      if (response.ok) {
-        const user = await response.json();
-        console.log();
+        if (response.ok) {
+          const user = await response.json();
+          console.log();
           console.log(user);
-          if (user.role === "admin") {
+          if (user.roles.includes("ADMIN")) {
             login(user);
             setMessage("Đăng nhập thành công");
           } else {

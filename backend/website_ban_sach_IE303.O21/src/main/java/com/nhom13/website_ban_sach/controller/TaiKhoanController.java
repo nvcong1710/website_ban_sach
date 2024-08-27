@@ -19,19 +19,22 @@ public class TaiKhoanController {
     private TaiKhoanService taiKhoanService;
 
     @PostMapping("/register")
-    public TaiKhoan register(@RequestBody TaiKhoan taiKhoan){
-        return taiKhoanService.register(taiKhoan);
+    public ResponseEntity<?> register(@RequestBody TaiKhoan taiKhoan) {
+        TaiKhoan tk = taiKhoanService.register(taiKhoan);
+        if (tk == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Tài khoản đã tồn tại");
+        } else return ResponseEntity.ok(taiKhoan);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         TaiKhoanDTO account = taiKhoanService.login(loginRequest);
-        if(account != null) return ResponseEntity.ok(account);
+        if (account != null) return ResponseEntity.ok(account);
         else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Login fail");
     }
 
     @GetMapping("/getalltaikhoan")
-    public List<TaiKhoanDTO> getAllTaiKhoan(){
+    public List<TaiKhoanDTO> getAllTaiKhoan() {
         return taiKhoanService.getAllTaiKhoan();
     }
 }

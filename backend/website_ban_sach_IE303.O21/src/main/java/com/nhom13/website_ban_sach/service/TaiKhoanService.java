@@ -17,8 +17,10 @@ public class TaiKhoanService implements ITaiKhoanService {
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
 
-    public TaiKhoan register(TaiKhoan taiKhoan){
-        return taiKhoanRepository.save(taiKhoan);
+    public TaiKhoan register(TaiKhoan taiKhoan) {
+        TaiKhoan tk = taiKhoanRepository.findByUsername(taiKhoan.getUsername());
+        if (tk == null) return taiKhoanRepository.save(taiKhoan);
+        else return null;
     }
 
     public TaiKhoanDTO login(LoginRequest loginRequest){
@@ -42,9 +44,4 @@ public class TaiKhoanService implements ITaiKhoanService {
     public long getTotalTaiKhoan() {
         return taiKhoanRepository.count();
     }
-
-//    public Account gettaiKhoanById(Long taiKhoanId) {
-//        Optional<Account> account = accountRepository.findById(taiKhoanId);
-//        return account.orElse(null);
-//    }
 }
